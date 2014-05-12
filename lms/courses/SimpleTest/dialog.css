@@ -1,0 +1,115 @@
+
+.DLG_modalDiv{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-color:#666;
+	-moz-opacity:0.65;
+	filter:alpha(opacity=65);
+	opacity:0.65;
+	display:none;
+}
+
+.DLG_dragDiv{
+	position:absolute;
+	width:100%;
+	height:100%;
+	-moz-opacity:0.50;
+	filter:alpha(opacity=50);
+	opacity:0.50;
+	display:none;
+}
+
+.DLG_titleBar,.DLG_titleBarLine{
+	background-image:url(./images/dlg-titlebar.gif);
+	background-repeat:repeat-x;
+	position:relative;	/* IMPORTANT */
+}
+
+.DLG_titleBarLine{
+	border-bottom:1px solid #000;
+}
+
+.DLG_titleText{	/* The title text in the title bar */
+	padding:1px;
+	padding-left:5px;
+	color:#FFF;
+	font-size:11px;
+	font-weight:bold;
+	font-family: helvetica, arial;
+	height:15px; /* EJT added for PROBLEM1 */
+}
+
+.DLG_titleBtns{	/* Div for the buttons in the title bar */
+	position:absolute;
+	right:1px;
+	top:2px; /* EJT changed from 1px to 2px for PROBLEM2 */
+	width:100px;
+	padding:0px;
+	margin:0px;
+	height:11px;
+}
+
+.DLG_titleBtns div{
+	float:right;
+}
+
+/* General button rules */
+.DLG_titleCloseBtn{
+	background-repeat:no-repeat;
+	background-position:center 3px;
+	*background-position:center 2px; /* EJT add for IE only for PROBLEM2 */
+	margin:0px;
+	padding:2px;
+	*padding:1px; /* EJT added for IE only for PROBLEM2 */
+	width:11px;
+	height:11px;
+	*overflow-y:hidden; /* EJT added for IE only for PROBLEM2 */
+}
+
+.DLG_titleCloseBtn{
+	background-image:url(./images/dlg-close.gif);
+}
+
+
+.DLG_winBtnOver {	/* General roll over effects for buttons */
+	padding:0px; /* EJT changed from 1px to 0px for PROBLEM2 */
+	margin-right:1px; /* EJT added for non IE for PROBLEM2 */
+	*margin-right:0px; /* EJT added for IE only for PROBLEM2 */
+	border:1px solid #FFF;
+	background-color:#000;
+	background-position:center 2px; /* EJT added for non IE for PROBLEM2 */
+	*background-position:center 1px; /* EJT added for IE only for PROBLEM2 */
+	cursor:pointer;
+}
+
+.DLG_window{	/* This div is the parent parent element of window elements such as tabs, content and status bar, i.e. the primary main parent element for a window */
+	background-color:#FFF;
+	border:1px solid #000;
+	width:330px;
+	height:200px;
+	overflow:hidden;
+	top:0px;
+	left:0px;
+	z-index:100000;
+	position:absolute;
+	display:none;
+}
+
+.DLG_innerDiv{	/* This div is the parent parent element of window elements such as tabs, content and status bar, i.e. the primary main parent element for a window */
+	position:relative;
+	background-color:#FFF;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-color:#FFF;
+}
+
+.DLG_content{
+	overflow:none;
+	position:relative;
+	border:none;
+}

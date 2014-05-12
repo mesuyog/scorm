@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Simulation</title>
+		<script src="SCORM_support/scorm_support.js"></script>
+		<script type="text/javascript" language="JavaScript">
+			// set document.domain property here, if it works for your environment/SCORM implementation
+			// document.domain="";
+			var g_intAPIType = 0;
+			// Hook for Internet Explorer
+			if ((navigator.appName && navigator.appName.indexOf("Microsoft") != -1 && navigator.userAgent.indexOf("Windows") != -1 && navigator.userAgent.indexOf("Windows 3.1") == -1) || g_intAPIType == -1)
+			{
+				g_intAPIType = 0;
+				document.write('<script language=\"VBScript\"\>\n');
+				document.write('On Error Resume Next\n');
+				document.write('Sub Captivate1_FSCommand(ByVal command, ByVal args)\n');
+				document.write('Call Captivate1_DoFSCommand(command, args)\n');
+				document.write('End Sub\n');
+				document.write('</script\>\n');
+			} else {
+				g_intAPIType = 1;
+			}
+			var strURLFile = "Simulation.swf";			// Name of the flash file
+			var intIntervalSecs = 1;				// Number of seconds to wait for SCORM API to load
+			var g_intAPIOrder = 0;					// Way to search for API object (0 - starts with bottom up; 1 - starts top down)
+			var strURLBase = "";
+			var strURLParams = "";
+			var strURLFull = document.location + "";
+			var intTemp = strURLFull.indexOf("#");
+			if (intTemp == -1)
+				intTemp = strURLFull.indexOf("?");
+			if (intTemp > 0)
+				strURLParams = strURLFull.substring(intTemp + 1, strURLFull.length);
+			var strTemp = location.protocol.toUpperCase();
+			if (strTemp.indexOf("FILE") == -1)
+			  var intTemp = location.pathname.lastIndexOf("/");
+			else
+			  var intTemp = location.pathname.lastIndexOf("\\");
+			if (intTemp != -1)
+			  strURLBase = location.protocol + "//" + location.host + location.pathname.substring(0, intTemp + 1);
+			else
+			  strURLBase = location.protocol + "//" + location.host + location.pathname;
+
+			strURLParams = (strURLParams==unescape(strURLParams)?escape(strURLParams):strURLParams);
+			strURLParams = (strURLParams==""?"":"?") + strURLParams;
+
+			function Finish()
+			{
+				if ((isAPI()) && (g_bFinishDone == false))
+				{
+					(g_zAPIVersion=="0.2"?g_objAPI.LMSCommit(""):g_objAPI.Commit(""));
+					g_bFinishDone = (g_zAPIVersion=="0.2"?g_objAPI.LMSFinish("") == "true":g_objAPI.Terminate("") == "true");
+				}
+				return (g_bFinishDone + "" ) // Force type to string
+			}
+
+			if(g_intAPIType==0)
+			{
+				// Detect Internet Explorer
+				var g_bIsInternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
+				// Handle fscommand messages from a Flash movie
+				function Captivate1_DoFSCommand(command, args)
+				{
+					var Captivate1Obj = g_bIsInternetExplorer ? Captivate1 : document.Captivate1;
+
+					var strFSArgs = new String(args);
+					var strFSCmd = new String(command);
+					var strErr = "true";
+					var strFSArg1, strFSArg2, strFSArg3
+					var intFSDelimiter = strFSArgs.indexOf("|");
+					if (intFSDelimiter > -1)
+					{
+						strFSArg1 = strFSArgs.substr(0, intFSDelimiter); 	// Name of data element to get from API
+						var strFSTemp = strFSArgs.substr(intFSDelimiter + 1);
+						intFSDelimiter = strFSTemp.indexOf("|");
+						if(intFSDelimiter > -1)
+						{
+							strFSArg2 = strFSTemp.substr(0, intFSDelimiter);	// Value
+							strFSArg3 = strFSTemp.substr(intFSDelimiter + 1);	// Variable
+						} else {
+							strFSArg2 = strFSTemp;
+						}
+					} else {
+						strFSArg1 = strFSArgs;
+					}
+
+					// do nothing, if SCORM API is not available
+					if (!isAPI()) return;
+
+					if ( strFSCmd == "LMSInitialize" || strFSCmd=="Initialize")
+					{
+						Captivate1Obj.SetVariable(strFSArg3, eval('g_objAPI.' + strFSCmd + '(\"\");'));
+					} else if ( strFSCmd == "LMSSetValue" || strFSCmd=="SetValue") {
+						strErr = eval('g_objAPI.' + strFSCmd + '(\"' + strFSArg1 + '\",\"' + strFSArg2 + '\");');
+						Captivate1Obj.SetVariable(strFSArg3, strErr);
+					} else if ( strFSCmd == "LMSFinish" || strFSCmd=="Terminate") {
+						g_bFinishDone = eval('g_objAPI.' + strFSCmd + '(\"\");')
+						strErr = g_bFinishDone;
+						Captivate1Obj.SetVariable(strFSArg3, g_bFinishDone);
+					} else if ( strFSCmd == "LMSCommit" || strFSCmd=="Commit") {
+						strErr = eval('g_objAPI.' + strFSCmd + '(\"\");');
+						Captivate1Obj.SetVariable(strFSArg3, strErr);
+					} else if ((strFSArg2) && (strFSArg2.length > 0)) {
+						if(strFSCmd=="LMSGetLastError")
+						{
+							strErr = eval('g_objAPI.' + strFSCmd + '();')
+							Captivate1Obj.SetVariable(strFSArg3, strErr);
+						} else {
+							strErr = eval('g_objAPI.' + strFSCmd + '(\"' + strFSArg1 + '\");')
+							Captivate1Obj.SetVariable(strFSArg3, strErr);
+						}
+					} else if (strFSCmd.substring(0,3) == "LMSGet") {
+						strErr = "-2: No Flash variable specified"
+					}
+
+					return strErr;
+				}
+			}
+
+		</script>
+	</head>
+	<body bgcolor="#FFFFFF" onunload="Finish();">
+		<layer id="NS_dynamic" name="NS_dynamic">
+			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+				codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
+				width="2" height="2" id="scorm_support" align="">
+				<param name=movie value="SCORM_support/scorm_support.swf"> <param name=quality value=high> <param name=menu value=false> <param name=bgcolor value=#FFFFFF>
+				<embed src="SCORM_support/scorm_support.swf" quality=high bgcolor=#FFFFFF  width="2" height="2" name="scorm_support" align=""
+					type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">
+				</embed>
+			</object>
+		</layer>
+		<iframe name="IE_dynamic" height=0 width=0 src="SCORM_support/scorm_support.htm"></iframe>
+		<script type="text/javascript" language="JavaScript">
+			var timeCurrent_int = new Date().getTime();
+			var timeLimit_int = new Date().getTime() + (intIntervalSecs * 1000);
+			// This simply loops for a set period of time, waiting for the API to
+			// load and/or be found.  A better solution would be to use setInterval
+			// and on the timeout, redirect or load the resulting Captivate file.
+			while((g_objAPI == null) && timeCurrent_int < timeLimit_int)
+			{
+				g_objAPI = getAPI(g_intAPIOrder);
+				timeCurrent_int = new Date().getTime();
+			}
+			if(g_objAPI != null)
+			{
+				strURLParams += (strURLParams==""?"?":"&") + "SCORM_API=" + g_zAPIVersion + "&SCORM_TYPE=" + g_intAPIType;
+			}
+
+			document.write('<table border="0" cellpadding="7" cellspacing="7"> \n');
+			document.write('  <tr>  \n');
+			document.write('    <td align="middle"><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" id="Captivate1" width="620" height="460" align="middle"> \n');
+			document.write('        <param name=movie value="' + strURLFile + strURLParams + '">\n');
+			document.write('        <param name=quality value=high> \n');
+			document.write('        <param name=menu value=false> \n');
+			document.write('        <param name=loop value=0> \n');
+			document.write('        <embed src="' + strURLFile + strURLParams + '" pluginspage="https://www.macromedia.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" quality=high type="application/x-shockwave-flash" name="Captivate1" width="620" height="460" align="middle" swLiveConnect="true">\n');
+			document.write('        </embed>  \n');
+			document.write('      </object></td> \n');
+			document.write('  </tr> \n');
+			document.write('</table> \n');
+
+		</script>
+	</body>
+</html>

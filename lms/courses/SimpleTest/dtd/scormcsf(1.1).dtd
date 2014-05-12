@@ -1,0 +1,121 @@
+<!--*** scormcsf(1.1).dtd-->
+
+<!--*** content: Root level of Content Structure Format representation.-->
+<!ELEMENT content  (globalProperties? , block)>
+
+<!--*** globalProperties: Properties of the content as whole.-->
+<!ELEMENT globalProperties  (externalMetadata+ , curricularTaxonomy?)>
+
+<!--*** block: A grouping of related structural elements.
+		Blocks contain Sharable Content Objects or other Blocks.
+		Blocks always contain other content elements.
+		This holds an unique (to this content) ID identifier 
+		for a particular Block.
+		(other elements may refer to this unique ID)-->
+<!ELEMENT block  ( (externalMetadata* , identification , prerequisites? , (sco | block)+ ) | blockAlias)>
+<!ATTLIST block  id ID  #REQUIRED >
+
+<!--*** externalMetadata: The value of this element refers or points
+		to the location of the metadata document describing this
+		content.-->
+<!ELEMENT externalMetadata  (source , model , location )>
+
+<!--*** curricularTaxonomy: Organizational methodology used to
+		construct the content.-->
+<!ELEMENT curricularTaxonomy  (source? , model , location? )>
+
+<!--*** identification: Identifies content context-specific
+		information.-->
+<!ELEMENT identification  (title , description? , labels? )>
+
+<!--*** prerequisites: Expression indicating what a student 
+		must accomplish before beginning this content element.
+		Content elements that a student must complete before
+		beginning a block or Sharable Content Object. It uses a
+		script that defines the logical rules to be applied.
+		The script type must be defined.
+		e.g.,   <prerequisites type="aicc_script">
+				<![CDATA[B1&B2&S1]]> 
+			</prerequisites> -->
+<!ELEMENT prerequisites  (#PCDATA )>
+<!ATTLIST prerequisites  type CDATA  #IMPLIED >
+
+<!--*** sco: A SCO is the smallest element of instruction or testing
+		to which a student may be routed by a LMS. It refers to
+		"content" launched by the LMS system.
+		This holds an unique (to this content) ID identifier.
+		(other elements may refer to this unique ID).-->
+<!ELEMENT sco  ( (externalMetadata* ,  identification , prerequisites? , timeLimit? , launch? , masteryScore? ) | scoAlias )>
+<!ATTLIST sco  id ID  #REQUIRED >
+
+<!--*** blockAlias: Reference to a previously defined Block. (permits
+		one Block to be used more than once within a content
+		structure).-->
+<!ELEMENT blockAlias EMPTY>
+<!ATTLIST blockAlias  targetID IDREF  #IMPLIED >
+
+<!--*** source: Describes the source or originator of a given
+		practice or specification to which this content adheres.
+		e.g., "ADL CSF", or "AICC CMI", or "IEEE LOM" -->
+<!ELEMENT source  (#PCDATA )>
+
+<!--*** model: Name of a specific data model used by this content.
+		e.g., "cmi", or "ARMY314", or "IMS v1.0" -->
+<!ELEMENT model  (#PCDATA )>
+
+<!--*** location: URI Location.-->
+<!ELEMENT location  (#PCDATA )>
+
+<!--*** title: Context specific title. May be used by an LMS system
+		in menus, screens, etc.-->
+<!ELEMENT title  (#PCDATA )>
+
+<!--*** description: Context specific textual information about the
+		content element.  It may contain the purpose, scope, or
+		summary.  (Defined by content author.)-->
+<!ELEMENT description  (#PCDATA )>
+
+<!--*** labels: Context specific local label. (e.g., unit, chapter, 
+		learning step)-->
+<!ELEMENT labels  (curricular? , developer? )>
+
+<!--*** Time values or actions associated with this SCO in this
+		context.-->
+<!ELEMENT timeLimit  (maxTimeAllowed? , timeLimitAction? )>
+
+<!--*** launch: Information needed by an LMS to launch an SCO.-->
+<!ELEMENT launch  (location , parameterString? , dataFromLMS? )>
+
+<!--*** masteryScore: Values to be used in this content context for
+		tracking score within an SCO.-->
+<!ELEMENT masteryScore  (#PCDATA )>
+
+<!--*** scoAlias: Reference to a previously defined SCO.  (Permits one
+		SCO to be used more than once within a content.)-->
+<!ELEMENT scoAlias EMPTY>
+<!ATTLIST scoAlias  targetID IDREF  #IMPLIED >
+
+<!--*** curricular label: Local name of the content element.
+		e.g., "UNIT", "MODULE", "LEARNING STEP"-->
+<!ELEMENT curricular  (#PCDATA )>
+
+<!--*** developer label: An organization-specific identifier
+		(e.g., D509)-->
+<!ELEMENT developer  (#PCDATA )>
+
+<!--*** maxTimeAllowed: The amount of time the student is allowed
+		to have in the current attempt on the SCO.-->
+<!ELEMENT maxTimeAllowed  (#PCDATA )>
+
+<!--*** timeLimitAction: What the SCO is to do when the max time 
+		allowed is exceeded. AICC examples: "exit,no message", 
+		"continue,no message", "exit,message","continue,message".-->
+<!ELEMENT timeLimitAction  (#PCDATA )>
+
+<!--*** parameterString: String of characters needed to successfully 
+		launch a SCO -->
+<!ELEMENT parameterString  (#PCDATA )>
+
+<!--*** dataFromLMS: unconstrained (undefined) initialization data
+		expected by the SCO when it is launched by the LMS. -->
+<!ELEMENT dataFromLMS  (#PCDATA )>

@@ -1,0 +1,218 @@
+<!-- IMS_METADATAv1p1.dtd -->
+<!-- Copyright (c) 2000 IMS Gobal Learning Consortium, Inc. -->
+<!-- DTD supporting the IMS XML binding of the IMS Version of the IEEE LTSC LOM Version 3.5 -->
+<!-- The standard version of this document is located at:
+		 http://www.imsproject.org/XML/ -->
+<!-- 2000-04-19 Thomas D. Wason: Lower cased version of IMS Meta-data DTD -->
+<!-- 2000-06-06: Released. -->
+
+<!-- Nothing is mandatory. -->
+
+<!-- Simple elements  -->
+
+<!-- extension: The extension element is used to create extensions at anyplace in the XML instantiation.  If the extension contains only elements from this DTD, maintaining those content models, then additional elements do not need to be declared.  It is encouraged that extensions be created from the exisiting library of elements whenever possible.  -->	
+<!ELEMENT extension ANY>
+
+<!-- language: A Human Language -->
+<!ELEMENT language (#PCDATA|extension)*>
+
+<!-- aggregationlevel: 0..3, 0 = raw media-->
+<!ELEMENT aggregationlevel (#PCDATA|extension)*>
+
+<!-- langstring: A string in a particular language -->
+<!ELEMENT langstring (#PCDATA|extension)*>
+<!ATTLIST langstring
+ 	lang CDATA #IMPLIED>
+
+<!-- String with no defined language.  -->
+<!ELEMENT STRING (#PCDATA|extension)*>
+
+<!-- catalogue: a reference index or listing -->
+<!ELEMENT catalogue (#PCDATA|extension)*>
+
+<!-- datetime: Date or time Per  W3C, e.g., 1999-08-07 -->
+<!ELEMENT datetime (#PCDATA|extension)*>
+
+<!-- difficulty: A scale of 0..4, 0 = Very Easy -->
+<!ELEMENT difficulty (#PCDATA|extension)*>
+
+<!-- The metadatascheme value should include version. -->
+<!ELEMENT metadatascheme (#PCDATA|extension)*>
+
+<!-- size: Integer, in bytes -->
+<!ELEMENT size (#PCDATA|extension)*>
+
+<!-- location: an Ordered list of places -->
+<!ELEMENT location (#PCDATA|extension)*>
+<!ATTLIST location 
+    type (URI|TEXT) "URI">
+
+<!-- minimumversion: the lowest or earliest -->	
+<!ELEMENT minimumversion (#PCDATA|extension)*>
+
+<!-- maximumversion: the highest or latest -->
+<!ELEMENT maximumversion (#PCDATA|extension)*>
+
+<!-- interactivitylevel: a scale of 0..4, 0 = Very Low -->
+<!ELEMENT interactivitylevel (#PCDATA|extension)*>
+
+<!-- semanticdensity: number of concepts as a fucntion of size of the resource. Scale of 0..4, 0 = Low -->
+<!ELEMENT semanticdensity (#PCDATA|extension)*>
+
+<!-- source: authoratative generator -->
+<!ELEMENT source (#PCDATA|extension)*>
+
+<!-- id: An alphanumeric identifier -->
+<!ELEMENT id (#PCDATA|extension)*>
+
+<!-- vcard: a STRING per vCard specification -->
+<!ELEMENT vcard (#PCDATA|extension)*>
+
+<!-- HHHHHHHHHHHHHH Elements with content models of elements HHHHHHHHHHH -->
+
+<!-- cost: is there?  A Boolean, yes|no -->
+<!ELEMENT cost (langstring*, extension?)>
+
+<!-- copyrightandotherrestrictions: are there any use restrictions? A Boolean, yes|no -->
+<!ELEMENT copyrightandotherrestrictions (langstring*, extension?)>
+
+<!-- intendedenduserrole: Teacher, Author, Learner, Manager -->
+<!-- Ordered list -->
+<!ELEMENT intendedenduserrole (langstring*, extension?)>
+
+<!-- interactivitytype: Direction of information flow between user and resource -->
+<!ELEMENT interactivitytype (langstring*, extension?)>
+
+<!-- format, technical:MIME or non-digital -->
+<!ELEMENT format (langstring*, extension?)>
+
+<!-- status: state, e.g., preliminary, draft, final, terminated -->
+<!ELEMENT status (langstring*, extension?)>
+
+<!-- structure: Logical structure, e.g., atomic, hierachical, linear, parceled, network -->
+<!ELEMENT structure (langstring*, extension?)>
+
+<!-- centity: The is the ENTITY element.  The word ENTITY is reserved within XML, so the name has been changed to centity to stand for "Contributing Entity".   -->
+<!-- Ordered list -->
+<!ELEMENT centity (vcard?,extension?)>
+
+<!-- entry: an alphanumeric string, normally human readable -->
+<!ELEMENT entry (langstring*, extension?)>
+
+<!-- purpose: reason or use -->
+<!ELEMENT purpose (langstring?, extension?)>
+
+<!-- title: brief descriptive string -->
+<!ELEMENT title (langstring*, extension?)>
+
+<!-- description: A textual summary. -->
+<!ELEMENT description (langstring*, extension?)>
+
+<!-- keywords: Decriptive words and/or phrases.  One keyword or keyphrase per langstring -->
+<!ELEMENT keywords (langstring*, extension?)>
+
+<!-- coverage: Span, e.g., Spatial, temporal, cultural -->
+<!ELEMENT coverage (langstring*, extension?)>
+
+<!-- version: edition -->
+<!ELEMENT version (langstring?, extension?)>
+
+<!-- type: specifies kind -->
+<!ELEMENT type (langstring?, extension?)>
+
+<!-- name: Textual designation -->
+<!ELEMENT name (langstring?, extension?)>
+
+<!-- installationremarks: technical notes how to import or set up -->
+<!ELEMENT installationremarks (langstring?, extension?)>
+
+<!-- otherplatformrequirements: technical notes -->
+<!ELEMENT otherplatformrequirements (langstring?, extension?)>
+
+<!-- role: Kind of participation or contribution -->
+<!ELEMENT role (langstring?, extension?)>
+
+<!-- learningresourcetype: Educationally specific resource type.  Ordered list -->
+<!ELEMENT learningresourcetype (langstring?, extension?)>
+
+<!-- learningcontext: Primary Education, Secondary Education, Higher Education, University First Cycle, University Second Cycle, University Postgrade, Technical School First Cycle, Technical School Second Cycle, Professional Formation, Continuous Formation, Vocational Training, Other -->
+<!ELEMENT learningcontext (langstring?, extension?)>
+
+<!-- typicalagerange: typical ages of intended users -->
+<!ELEMENT typicalagerange (langstring?, extension?)>
+
+<!-- kind: type or role -->
+<!ELEMENT kind (langstring?, extension?)>
+
+<!-- taxon: a specific node ata specific level in a taxonomy. An ordered list of taxons comprise a taxonpath-->
+<!ELEMENT taxon (id?, entry?, extension?)>
+
+<!-- date: calendar and/or clock instant.  date may be repeated when both DateTime and Description are used. -->
+<!ELEMENT date (datetime?, description?, extension?)>
+
+<!-- duration: temporal span -->
+<!ELEMENT duration (datetime?, description?, extension?)>
+
+<!ELEMENT typicallearningtime (datetime?, description?, extension?)>
+
+<!-- taxonpath: A taxonomic path of taxon nodes in a specific classification or txonomy.  Taxonomies are typically hierachies of tems or phases with increasinly finer resolutions deeper in the taxonpath.  There may be different paths, in the same or different classifications, that describe the same characteristic. -->
+<!ELEMENT taxonpath (source?, taxon*, extension?)>
+
+<!-- catalogentry: a specific entry from a specific catalogue or index.  Ordered list -->
+<!ELEMENT catalogentry (catalogue?, entry?, extension?)>
+
+<!-- contribute: Type of contribution or participation as defined by Role -->
+<!ELEMENT contribute (role?, centity*, date?, extension?)>
+
+<!-- resource: a specific target resource in a relation -->
+<!ELEMENT resource (description?, extension?)>
+
+<!-- requirements: specific needs for use.  Usually technical -->
+<!ELEMENT requirements (type?, name?, minimumversion?, maximumversion?, extension?)>
+
+<!-- HHHHHHHHHHHHHHH  Category Elements HHHHHHHHHHHHHHH  -->
+
+<!-- annotation is a category element -->
+<!-- Evaluations or comments. -->
+<!ELEMENT annotation (centity?, date?, description?, extension?)>
+
+<!-- classification is a category element -->
+<!-- Description or catalogueing of a characteristic. -->
+<!ELEMENT classification (purpose?, taxonpath*, description?, keywords*, extension?)>
+
+<!-- educational is a Category element. -->
+<!-- Educational or pedagogic features of the resource. -->
+<!-- 2000-04-17. language was ? is now * -->
+<!ELEMENT educational (interactivitytype?, learningresourcetype*, interactivitylevel?, semanticdensity?, intendedenduserrole*, learningcontext*, typicalagerange*, difficulty?, typicallearningtime?, description?, language*, extension?)>
+
+<!-- Category element general -->
+<!-- Context-independent features of the resource. -->
+<!ELEMENT general (title?, catalogentry*, language*, description*, keywords*, coverage*, structure?, aggregationlevel?, extension?)>
+
+<!-- Category Element lifecycle -->
+<!-- Features related to the life cycle of the resource. -->
+<!ELEMENT lifecycle (version?, status?, contribute*, extension?)>
+
+<!-- metametadata is a category element -->
+<!-- Features of the description rather than the resource. -->
+<!ELEMENT metametadata (catalogentry*, contribute*, metadatascheme*, language?, extension?)>
+
+<!-- relation is a category element -->
+<!-- Features of the resource in relationship to other resources. -->
+<!ELEMENT relation (kind?, resource?, extension?)>
+
+<!-- rights is a category element -->
+<!-- Conditions of use of the resource. -->
+<!ELEMENT rights (cost?, copyrightandotherrestrictions?, description?, extension?)>
+
+<!-- technical is a category element -->
+<!-- Technical features of the resource. -->
+<!ELEMENT technical (format?, size?, location*, requirements*, installationremarks?, otherplatformrequirements?, duration?, extension?)>
+
+<!-- HHHHHHHHHHHHHH ROOT ELEMENT HHHHHHHHHHHHHHHHH -->
+
+<!-- record is the Root element -->
+<!ELEMENT record (metametadata?, general?, lifecycle?, technical?, educational?, rights?, relation*, annotation*, classification*, extension?)>
+<!ATTLIST record 
+	xmlns CDATA #FIXED "http://www.imsproject.org/metadata/">
+	
